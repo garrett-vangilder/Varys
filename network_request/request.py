@@ -27,16 +27,14 @@ class Requester(object):
         return cls._instance
 
     def next_page(self):
-        page = None
         domain = self.domain
-        while not page:
+
+        while True:
             route = self.routes[self.current_index]
-            print(f'http://{domain}/{route}')
             resp = request('GET', f'http://{domain}/{route}')
             self.current_index += 1
-            if resp.status_code == 200:
-                page = resp.text
-            if self.current_index >= len(self.routes):
-                return None
 
-        return page
+            if resp.status_code == 200:
+                yield resp.headers, resp.text
+            if self.current_index >= len(self.routes):
+                break
