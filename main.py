@@ -1,6 +1,7 @@
 import sys
 from argument_parser.parser import ArgParser
 from exceptions import ArgumentError
+from network_request.request import Requester
 
 
 def main(argv):
@@ -14,6 +15,15 @@ def main(argv):
 
     print(f'Target domain: {domain}')
     print(f'Target regex: {regex}')
+
+    requester = Requester.instance(domain)
+    while True:
+        next_page = requester.next_page()
+
+        if not next_page:
+            print('finish enumeration')
+            break
+
 
 
 if __name__ == '__main__':

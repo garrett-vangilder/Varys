@@ -8,13 +8,15 @@ class ArgParser:
 
     @staticmethod
     def get_options(argv):
+        """"""
         domain = None
         regex = None
+
         try:
             opts, args = getopt.getopt(sys.argv[1:], "hd:r:", ["help", "domain=", "regex="])
             for opt, arg in opts:
                 if opt == '-h':
-                    print('test.py -i <inputfile> -o <outputfile>')
+                    print('test.py -d <domain> -r <regex>')
                     sys.exit()
                 elif opt in ("-d", "--domain"):
                     domain = arg
