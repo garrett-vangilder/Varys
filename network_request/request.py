@@ -3,6 +3,7 @@ from requests import request
 
 class Requester(object):
     _instance = None
+
     current_index = None
     domain = None
     routes = []
@@ -31,10 +32,11 @@ class Requester(object):
 
         while True:
             route = self.routes[self.current_index]
-            resp = request('GET', f'http://{domain}/{route}')
+            url = f'http://{domain}/{route}'
+            resp = request('GET', url)
             self.current_index += 1
 
             if resp.status_code == 200:
-                yield resp.headers, resp.text
+                yield url, resp.headers, resp.text
             if self.current_index >= len(self.routes):
                 break

@@ -2,6 +2,7 @@ import getopt
 import sys
 
 from exceptions import ArgumentError
+from re import escape
 
 
 class ArgParser:
@@ -21,6 +22,7 @@ class ArgParser:
                 elif opt in ("-d", "--domain"):
                     domain = arg
                 elif opt in ("-r", "--regex"):
+                    # regex = r'' + escape(arg) + ''
                     regex = arg
         except ValueError as err:
             raise ArgumentError(err)
