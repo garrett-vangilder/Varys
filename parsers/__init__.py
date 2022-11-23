@@ -1,5 +1,7 @@
 from re import compile
 
+from domain.objects import RouteEntry
+
 
 class BaseParser:
     regex = None
@@ -11,5 +13,5 @@ class BaseParser:
 
         self.regex = compile(re_genre)
 
-    def find_match(self, ):
+    def find_match(self, entry: RouteEntry):
         raise NotImplementedError('Do not use BaseParser')

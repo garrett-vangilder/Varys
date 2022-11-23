@@ -10,7 +10,6 @@ class RouteEntry:
     route: str
 
     def to_wire(self):
-        import pdb; pdb.set_trace()
         return {
             'header': dumps(dict(self.header)),
             'element': dumps(self.html),

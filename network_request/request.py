@@ -18,12 +18,11 @@ class Requester(object):
         if not domain:
             raise ValueError('Domain is required')
 
-        # init
         cls._instance.domain = domain
         cls.current_index = 0
 
-        # TODO implement route parser from external dictionarys
-        cls.routes = ['about', 'careers', 'app']
+        # TODO implement route parser from external dictionary
+        cls.routes = ['about', 'careers', 'app', 'contact-google']
 
         return cls._instance
 
@@ -35,7 +34,6 @@ class Requester(object):
             url = f'http://{domain}/{route}'
             resp = request('GET', url)
             self.current_index += 1
-
             if resp.status_code == 200:
                 yield url, resp.headers, resp.text
             if self.current_index >= len(self.routes):

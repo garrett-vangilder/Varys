@@ -4,6 +4,7 @@ from exceptions import ArgumentError
 from network_request.request import Requester
 from domain.objects import Payload, RouteEntry
 from parsers.headers import HTTPHeaderParser
+from parsers.html import HTMLParser
 
 
 def main(argv):
@@ -18,18 +19,13 @@ def main(argv):
     for url, headers, page in requester.next_page():
         entry = RouteEntry(headers, html=page, route=url)
         http_header_parser = HTTPHeaderParser(regex)
-        # http_header_parser = HTTPHeaderParser(regex) #TODO
+        html_parser = HTMLParser(regex)
 
         header_match = http_header_parser.find_match(entry)
-        html_match = False # TODO
+        html_match = html_parser.find_match(entry)
 
         if header_match or html_match:
             payload.entries.append(entry)
-
-    if payload.entries:
-        import pprint
-        pprint.pprint('Found')
-        pprint.pprint(payload.to_wire())
 
 
 if __name__ == '__main__':
