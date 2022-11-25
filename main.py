@@ -7,15 +7,18 @@ from parsers.headers import HTTPHeaderParser
 from parsers.html import HTMLParser
 
 
-def main(argv):
+def main():
     try:
-        domain, regex = ArgParser.get_options(argv)
+        domain, regex, route_list = ArgParser.get_options()
     except ArgumentError as err:
         print(err.msg)
         sys.exit(1)
 
+    # define final payload
     payload = Payload(entries=[])
-    requester = Requester.instance(domain)
+
+    # build requester, this requires domain and reference to the preferred route_list
+    requester = Requester.instance(domain, route_list)
     for url, headers, page in requester.next_page():
         entry = RouteEntry(headers, html=page, route=url)
         http_header_parser = HTTPHeaderParser(regex)
@@ -29,4 +32,4 @@ def main(argv):
 
 
 if __name__ == "__main__":
-    main(sys.argv)
+    main()
