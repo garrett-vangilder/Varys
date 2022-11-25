@@ -11,9 +11,9 @@ class RouteEntry:
 
     def to_wire(self):
         return {
-            'header': dumps(dict(self.header)),
-            'element': dumps(self.html),
-            'route': self.route
+            "header": dumps(dict(self.header)),
+            "element": dumps(self.html),
+            "route": self.route,
         }
 
 

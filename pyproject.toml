@@ -12,6 +12,7 @@ requests = "^2.28.1"
 beautifulsoup4 = "^4.11.1"
 black = {extras = ["d"], version = "^22.10.0"}
 pylint = "^2.15.6"
+pre-commit = "^2.20.0"
 
 
 [build-system]
