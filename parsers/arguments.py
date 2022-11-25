@@ -17,17 +17,18 @@ class ArgParser:
     """
 
     @staticmethod
-    def get_options() -> Tuple[str, str]:
+    def get_options() -> Tuple[str, str, str]:
         """
         Returns parsed command line arguments / options into varys script
-        :return: Tuple[str, str]
+        :return: Tuple[str, str, str]
         """
         domain = None
         regex = None
+        route_list = "./config/default.txt"
 
         try:
             opts, _ = getopt.getopt(
-                sys.argv[1:], "hd:r:", ["help", "domain=", "regex="]
+                sys.argv[1:], "hd:r:rl:", ["help", "domain=", "regex=", "route_list="]
             )
             for opt, arg in opts:
                 if opt == "-h":
@@ -37,6 +38,9 @@ class ArgParser:
                     domain = arg
                 elif opt in ("-r", "--regex"):
                     regex = arg
+                elif opt in ("-rl", "--route_list"):
+                    route_list = arg
+
         except ValueError as err:
             raise ArgumentError(str(err)) from err
 
@@ -49,4 +53,4 @@ class ArgParser:
                 f"[ArgumentError] Did not provide required parameters regex: {regex}"
             )
 
-        return domain, regex
+        return domain, regex, route_list
