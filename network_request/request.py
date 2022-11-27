@@ -10,13 +10,14 @@ class Requester(object):
 
     current_index = None
     domain = None
+    logger = None
     route_file = []
 
     def __init__(self):
         raise RuntimeError("Call instance() instead")
 
     @classmethod
-    def instance(cls, domain=None, route_list=None):
+    def instance(cls, domain=None, route_list=None, *args, **kwargs):
         if cls._instance is None:
             cls._instance = cls.__new__(cls)
         if not domain:
@@ -24,6 +25,7 @@ class Requester(object):
 
         cls._instance.domain = domain
         cls.current_index = 0
+        cls.logger = kwargs.get("logger")
 
         cls.route_file = open(route_list, "r")
 
@@ -39,6 +41,7 @@ class Requester(object):
                 break
 
             url = f"http://{domain}/{route}"
+
             resp = request("GET", url)
 
             # request made
@@ -46,5 +49,8 @@ class Requester(object):
 
             sleep(randint(0, 1))
 
+            self.logger.info(
+                f"[Requester.next_page()] URL: {url} responded {resp.status_code}"
+            )
             if resp.status_code == 200:
                 yield url, resp.headers, resp.text

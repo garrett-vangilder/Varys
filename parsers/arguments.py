@@ -1,6 +1,7 @@
 """
 Helper functions to parse command line arguments passed into varys
 """
+import logging
 import getopt
 import sys
 from typing import Tuple
@@ -17,19 +18,24 @@ class ArgParser:
     """
 
     @staticmethod
-    def get_options() -> Tuple[str, str, str]:
+    def get_options(*args, **kwargs) -> Tuple[str, str, str, int]:
         """
         Returns parsed command line arguments / options into varys script
-        :return: Tuple[str, str, str]
+        :return: Tuple[str, str, str, str]
         """
+
+        log_level = logging.ERROR
         domain = None
         regex = None
         route_list = "./config/default.txt"
 
         try:
             opts, _ = getopt.getopt(
-                sys.argv[1:], "hd:r:rl:", ["help", "domain=", "regex=", "route_list="]
+                sys.argv[1:],
+                "hd:r:rl:v:",
+                ["help", "domain=", "regex=", "route_list=", "verbose"],
             )
+
             for opt, arg in opts:
                 if opt == "-h":
                     print("test.py -d <domain> -r <regex>")
@@ -40,6 +46,8 @@ class ArgParser:
                     regex = arg
                 elif opt in ("-rl", "--route_list"):
                     route_list = arg
+                elif opt in ("-v", "--verbose"):
+                    log_level = logging.INFO
 
         except ValueError as err:
             raise ArgumentError(str(err)) from err
@@ -53,4 +61,4 @@ class ArgParser:
                 f"[ArgumentError] Did not provide required parameters regex: {regex}"
             )
 
-        return domain, regex, route_list
+        return domain, regex, route_list, log_level
