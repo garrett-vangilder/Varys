@@ -1,8 +1,8 @@
-import logging
-
 import sys
+from datetime import datetime as dt
 
 from logger import Logger
+from output.json_file_write import JSONSerializer
 from parsers.arguments import ArgParser
 from exceptions import ArgumentError
 from network_request.request import Requester
@@ -13,7 +13,7 @@ from parsers.html import HTMLParser
 
 def main():
     try:
-        domain, regex, route_list, log_level = ArgParser.get_options()
+        domain, regex, route_list, log_level, output_path = ArgParser.get_options()
         logger = Logger.instance(log_level)
     except ArgumentError as err:
         print(err.msg)
@@ -31,15 +31,26 @@ def main():
     # build requester, this requires domain and reference to the preferred route_list
     requester = Requester.instance(domain, route_list, logger=logger)
     for url, headers, page in requester.next_page():
-        entry = RouteEntry(headers, html=page, route=url)
+        entry = RouteEntry(headers, html=page, route=url, match=set())
         http_header_parser = HTTPHeaderParser(regex, logger=logger)
         html_parser = HTMLParser(regex, logger=logger)
 
-        header_match = http_header_parser.find_match(entry)
-        html_match = html_parser.find_match(entry)
+        header_match = http_header_parser.find_match(entry) or set()
+        html_match = html_parser.find_match(entry) or set()
 
-        if header_match or html_match:
+        entry.match = entry.match.union(header_match)
+        entry.match = entry.match.union(html_match)
+
+        if entry.match:
             payload.entries.append(entry)
+
+            now = dt.now().strftime("%Y-%m-%dT%H:%M:%S")
+
+            file_name = f"{domain}_{now}.json"
+            # write to file
+            JSONSerializer.to_file(
+                payload.to_wire(), output_path, file_name=file_name, logger=logger
+            )
 
 
 if __name__ == "__main__":

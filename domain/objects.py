@@ -1,6 +1,6 @@
-from json import dumps
+from json import dumps, loads
 from dataclasses import dataclass
-from typing import List
+from typing import List, Set
 
 
 @dataclass
@@ -8,11 +8,11 @@ class RouteEntry:
     header: object
     html: object
     route: str
+    match: Set[str]
 
     def to_wire(self):
         return {
-            "header": dumps(dict(self.header)),
-            "element": dumps(self.html),
+            "match": list(self.match),
             "route": self.route,
         }
 
