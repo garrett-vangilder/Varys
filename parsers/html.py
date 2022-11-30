@@ -1,3 +1,5 @@
+import bs4.element
+
 from domain.objects import RouteEntry
 from . import BaseParser
 from bs4 import BeautifulSoup
@@ -10,6 +12,10 @@ class HTMLParser(BaseParser):
         soup = BeautifulSoup(entry.html, "html.parser")
 
         for element in soup.find_all(string=self.regex):
+            if type(element) is bs4.element.NavigableString:
+                match.append(str(element))
+                continue
+
             for match_ in self.regex.finditer(str(element), IGNORECASE):
 
                 # grab starting and end pos to account for groups
