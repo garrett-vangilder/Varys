@@ -19,5 +19,8 @@ brew install python
 
 # Install poetry https://python-poetry.org/docs/
 curl -sSL https://install.python-poetry.org | python3 -
+
+# run command w/ poetry
+poetry run python main.py --domain=$domain --regex=$regex --route_list='./config/default.txt' --verbose
 ```
 
