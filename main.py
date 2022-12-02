@@ -30,6 +30,11 @@ def main():
 
     # build requester, this requires domain and reference to the preferred route_list
     requester = Requester.instance(domain, route_list, logger=logger)
+
+    # find now, important for output
+    now = dt.now().strftime("%Y-%m-%dT%H:%M:%S")
+
+    file_name = f"{domain}_{now}.json"
     for url, headers, page in requester.next_page():
         entry = RouteEntry(headers, html=page, route=url, match=set())
         http_header_parser = HTTPHeaderParser(regex, logger=logger)
@@ -44,9 +49,6 @@ def main():
         if entry.match:
             payload.entries.append(entry)
 
-            now = dt.now().strftime("%Y-%m-%dT%H:%M:%S")
-
-            file_name = f"{domain}_{now}.json"
             # write to file
             JSONSerializer.to_file(
                 payload.to_wire(), output_path, file_name=file_name, logger=logger
