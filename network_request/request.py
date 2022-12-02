@@ -26,6 +26,7 @@ class Requester(object):
         cls._instance.domain = domain
         cls.current_index = 0
         cls.logger = kwargs.get("logger")
+        cls.protocol = kwargs.get("protocol", "https")
 
         cls.route_file = open(route_list, "r")
 
@@ -33,6 +34,7 @@ class Requester(object):
 
     def next_page(self):
         domain = self.domain
+        protocol = self.protocol
 
         while True:
             route = self.route_file.readline().strip("\n")
@@ -40,7 +42,7 @@ class Requester(object):
             if route == "" and self.current_index != 0:
                 break
 
-            url = f"http://{domain}/{route}"
+            url = f"{protocol}://{domain}/{route}"
 
             resp = request("GET", url)
 

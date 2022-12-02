@@ -30,12 +30,21 @@ class ArgParser:
         regex = None
         route_list = "./config/default.txt"
         output_dir = "./"
+        protocol = "https"
 
         try:
             opts, _ = getopt.getopt(
                 sys.argv[1:],
-                "hd:r:rl:v:o:",
-                ["help", "domain=", "regex=", "route_list=", "verbose", "output="],
+                "hd:r:rl:v:o:i:",
+                [
+                    "help",
+                    "domain=",
+                    "regex=",
+                    "route_list=",
+                    "verbose",
+                    "output=",
+                    "insecure",
+                ],
             )
 
             for opt, arg in opts:
@@ -56,6 +65,8 @@ class ArgParser:
                             f"[ArgumentError] Did not provide a valid output directory output_dir: {arg}"
                         )
                     output_dir = arg
+                elif opt in ("-i", "--insecure"):
+                    protocol = "http"
 
         except ValueError as err:
             raise ArgumentError(str(err)) from err
@@ -71,4 +82,4 @@ class ArgParser:
                 f"[ArgumentError] Did not provide required parameters regex: {regex}"
             )
 
-        return domain, regex, route_list, log_level, output_dir
+        return domain, regex, route_list, log_level, output_dir, protocol
