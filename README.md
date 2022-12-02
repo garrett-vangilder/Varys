@@ -23,4 +23,46 @@ curl -sSL https://install.python-poetry.org | python3 -
 # run command w/ poetry
 poetry run python main.py --domain=$domain --regex=$regex --route_list='./config/default.txt' --verbose
 ```
+## How to
+
+
+### Basic Usage
+```bash
+# url regex
+https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()!@:%_\+.~#?&\/\/=]*)
+
+## Example call 
+poetry run python main.py --domain=$domain --regex='https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()!@:%_\+.~#?&\/\/=]*)'
+
+# phone number regex
+\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*
+
+## Example call 
+poetry run python main.py --domain=$domain --regex='\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*'
+
+```
+
+### Commonly used regexs
+
+This is not a definitive list, however a good place to start when looking around.
+
+```bash
+# URL regex
+https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()!@:%_\+.~#?&\/\/=]*)
+
+## Example call 
+poetry run python main.py --domain=$domain --regex='https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()!@:%_\+.~#?&\/\/=]*)'
+
+# Phone number regex
+\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*
+
+## Example call 
+poetry run python main.py --domain=$domain --regex='\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*'
+
+# Email address regex
+[a-zA-Z0-9+._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+
+
+## Example call
+poetry run python main.py --domain=$domain --regex='[a-zA-Z0-9+._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+'
+```
 
