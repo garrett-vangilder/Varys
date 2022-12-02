@@ -13,14 +13,22 @@ from parsers.html import HTMLParser
 
 def main():
     try:
-        domain, regex, route_list, log_level, output_path = ArgParser.get_options()
+        (
+            domain,
+            regex,
+            route_list,
+            log_level,
+            output_path,
+            protocol,
+        ) = ArgParser.get_options()
         logger = Logger.instance(log_level)
     except ArgumentError as err:
         print(err.msg)
         sys.exit(1)
 
     logger.info(
-        "Running Varys with the following options: domain={domain}, regex={regex}, route_list={route_list}, log_level={log_level}".format(
+        "Running Varys with the following options: domain={domain}, regex={regex}, route_list={route_list}, "
+        "log_level={log_level}".format(
             domain=domain, regex=regex, route_list=route_list, log_level=log_level
         )
     )
@@ -29,7 +37,7 @@ def main():
     payload = Payload(entries=[])
 
     # build requester, this requires domain and reference to the preferred route_list
-    requester = Requester.instance(domain, route_list, logger=logger)
+    requester = Requester.instance(domain, route_list, logger=logger, protocol=protocol)
 
     # find now, important for output
     now = dt.now().strftime("%Y-%m-%dT%H:%M:%S")
