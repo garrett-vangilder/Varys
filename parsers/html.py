@@ -10,9 +10,7 @@ class HTMLParser(BaseParser):
     def find_match(self, entry: RouteEntry) -> list:
         match = []
         soup = BeautifulSoup(entry.html, "html.parser")
-        import pdb
 
-        pdb.set_trace()
         for element in soup.find_all(string=self.regex):
             if type(element) is bs4.element.NavigableString:
                 match.append(str(element))
