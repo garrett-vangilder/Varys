@@ -91,12 +91,6 @@ poetry run python main.py --domain=$domain --regex='[a-zA-Z0-9+._-]+@[a-zA-Z0-9.
 # Example call looking for Apache webservers
 poetry run python main.py --domain=$domain --regex='(?i)apache\/\d+\.\d+\.\d+'
 
-# Regex for Apache webservers
-(?i)apache\/\d+\.\d+\.\d+
-
-# Example call looking for Apache webservers
-poetry run python main.py --domain=$domain --regex='(?i)apache\/\d+\.\d+\.\d+'
-
 # Regex for nginx webservers
 (?i)nginx.*$
 
