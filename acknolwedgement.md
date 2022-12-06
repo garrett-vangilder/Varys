@@ -1,1 +1,1 @@
-config/default.txt is taken from https://gist.github.com/jhaddix/b80ea67d85c13206125806f0828f4d10
+config/*.txt are taken from https://gist.github.com/jhaddix
